@@ -6,3 +6,5 @@ Utility tool to encrypt data using AWS KMS and store it in preferred backend.
 ## Overview
 AWS-KET (AWS KMS Encryption Tool) uses AWS KMS Key to encrypt and decrypt files/contents based on user provided kms keys and push them to a datastore backend (S3, RDS or DynamoDB).
 
+
+![GitHub issues](https://img.shields.io/github/issues/sayefiqb/aws-ket)
