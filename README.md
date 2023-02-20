@@ -8,3 +8,20 @@ AWS-KET (AWS KMS Encryption Tool) uses AWS KMS Key to encrypt and decrypt files/
 
 
 ![GitHub issues](https://img.shields.io/github/issues/sayefiqb/aws-ket)
+
+
+#### Initaliztion of app
+```
+python initialize.py
+```
+
+#### Encrypt text/file
+```
+python app.py --text 'Hello World'
+python app.py --file test/sample.txt
+```
+
+#### Decrypt text/file from s3
+```
+python app.py --decrypt </path/to/your/s3/object>
+```
