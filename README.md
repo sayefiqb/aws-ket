@@ -12,6 +12,7 @@ AWS-KET (AWS KMS Encryption Tool) uses AWS KMS Key to encrypt and decrypt files/
 
 #### Initaliztion of app
 ```
+cd aws-ket
 python initialize.py
 ```
 

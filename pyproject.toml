@@ -1,0 +1,67 @@
+[build-system]
+requires = [
+    "setuptools",
+    "setuptools-scm",
+    "wheel",
+]
+build-backend="setuptools.build_meta"
+
+[project]
+name = "aws-ket"
+authors = [{name = "Sayef Iqbal", email = "si2400@columbia.edu"}]
+description="AWS-KET encrypts and decrypts files and stores them to backend storage"
+readme = "README.md"
+version = "0.0.1"
+requires-python = ">=3.7"
+
+dependencies = []
+
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+
+
+[project.license]
+file = "LICENSE"
+
+[project.urls]
+repository = "https://github.com/sayefiqb/aws-ket"
+
+[project.optional-dependencies]
+develop = [
+    "pytest>=4.3.0",
+    "pytest-cov>=2.6.1"
+]
+
+[tool.black]
+color = true
+line-length = 120
+target-version = ['py310']
+skip-string-normalization = true
+
+[tool.check-manifest]
+ignore = [
+]
+
+[tool.isort]
+line_length = 120
+known_first_party = 'pydantic'
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+combine_as_imports = true
+
+[tool.mypy]
+python_version = '3.10'
+
+[tool.pytest.ini_options]
+asyncio_mode = 'strict'
+testpaths = 'aws-ket/tests'
