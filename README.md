@@ -11,6 +11,12 @@ AWS-KET (AWS KMS Encryption Tool) uses AWS KMS Key to encrypt and decrypt files/
 
 [![CodeQL](https://github.com/sayefiqb/aws-ket/actions/workflows/github-code-scanning/codeql/badge.svg?branch=main)](https://github.com/sayefiqb/aws-ket/actions/workflows/github-code-scanning/codeql)
 
+#### Setup
+
+This application will only work if you have AWS account with full privileges on KMS and S3 services in AWS. You should also have aws cli tool installed.
+
+[Setup AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html)
+
 
 #### Initaliztion of app
 ```
