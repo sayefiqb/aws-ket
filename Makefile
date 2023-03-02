@@ -21,7 +21,7 @@ lint:  ## run static analysis with flake8
 lints: lint
 
 format:  ## run autoformatting with black
-	python -m black aws-ket/ setup.py
+	black * -t py38
 
 # alias
 fix: format
