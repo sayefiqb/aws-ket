@@ -14,14 +14,13 @@ install:  ## install library
 # LINTS #
 #########
 lint:  ## run static analysis with flake8
-	python -m black --check aws-ket setup.py
-	python -m flake8 aws-ket setup.py
+	black ./src/* -t py38
 
 # Alias
 lints: lint
 
 format:  ## run autoformatting with black
-	black * -t py38
+	black ./src/* -t py38
 
 # alias
 fix: format

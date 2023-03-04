@@ -13,12 +13,12 @@ test_file_name = 'sample.txt'
 
 
 # Create a cleanup job  that will remove bucket and kms key with alias.
-def test_setup():
-    cleanup.cleanup_kms()
-    cleanup.cleanup_s3()
-    print('Cleanup completed!')
-    print('Running initialization...')
-    initialize.initialize()
+# def test_setup():
+#     cleanup.cleanup_kms()
+#     cleanup.cleanup_s3()
+#     print('Cleanup completed!')
+#     print('Running initialization...')
+#     initialize.initialize()
 
 
 # This funtion will first encrypt, push to S3 and then decrypt it from S3
@@ -26,6 +26,7 @@ def test_encrypton_decryption_of_text():
     encrypted_string = encrypt.encrypt_text(kms_key_id, sample_text)
     s3_response = encrypt.push_to_s3(bucket_name, file_name, encrypted_string)
     decrypted_string = decrypt.decrypt_text(bucket_name, file_name, kms_key_id)
+    print(decrypted_string)
     assert decrypted_string == sample_text
 
 
