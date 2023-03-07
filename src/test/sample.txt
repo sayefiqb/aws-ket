@@ -1,1 +1,0 @@
-This is a text inside a file called sample.txt. This file will be used for integration testing of encryption annd decryption of files.

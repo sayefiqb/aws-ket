@@ -3,7 +3,6 @@
 import os
 import boto3
 import botocore
-from helper import s3_helper
 
 
 client_kms = boto3.client('kms')
@@ -11,25 +10,29 @@ client_s3 = boto3.client('s3')
 client_iam = boto3.client('iam')
 resource_s3 = boto3.resource('s3')
 
-bucket_name = os.environ.get('S3_BUCKET')
-kms_key_id = os.environ.get('KMS_KEY_ID')
 
 
-def cleanup_kms():
+
+def get_iam_user():
     try:
-        alias_response = client_kms.delete_alias(AliasName='alias/aws_ket')
-        kms_key_response = client_kms.disable_key(KeyId=kms_key_id)
-        print('KMS Alias and Key have been disabled!')
-        return kms_key_response
+        client_iam = boto3.client('iam')
+        response = client_iam.get_user()
+        return response['User']['UserId']
     except botocore.exceptions.ClientError as error:
         response = error.response
-        if response["Error"]["Code"] == "NotFoundException" or response["ResponseMetadata"]["HTTPStatusCode"] == 400:
-            print(f'The Alias has already been removed')
+        if (
+            response["Error"]["Code"] == "UnrecognizedClientException"
+            and response["ResponseMetadata"]["HTTPStatusCode"] == 400
+        ):
+            print("Invalid AWS Client Token")
+            return "UnrecognizedClientException"
+        if response["Error"]["Code"] == "AccessDenied" and response["ResponseMetadata"]["HTTPStatusCode"] == 403:
+            print(response['Error']['Message'])
 
 
-def cleanup_s3():
+def cleanup_s3(bucket_name, region):
     try:
-        s3_helper.permanently_delete_object(bucket_name)
+        permanently_delete_object(bucket_name,region)
         bucket = resource_s3.Bucket(bucket_name)
         bucket.objects.all().delete()
         client_s3.delete_bucket(Bucket=bucket_name)
@@ -39,7 +42,30 @@ def cleanup_s3():
         if response["Error"]["Code"] == "NoSuchBucket" or response["ResponseMetadata"]["HTTPStatusCode"] == 404:
             print(f'The S3 bucket was already deleted')
 
+def permanently_delete_object(bucket_name,region object_key=None):
+    """
+    Permanently deletes a versioned object by deleting all of its versions.
+
+    :param bucket: The bucket that contains the object.
+    :param region: The region S3 was created in.
+    :param object_key: The object to delete.
+    """
+    s3 = boto3.resource('s3')
+    bucket = s3.Bucket(bucket_name)
+    print(f'Deleting {bucket_name} ...')
+    try:
+        if object_key:
+            bucket.object_versions.filter(Prefix=object_key).delete()
+            print(f"Permanently deleted all versions of object {object_key} in {bucket_name}.",)
+        else:
+            bucket.object_versions.delete()
+            print(f"Permanently deleted all versions of all objects in {bucket_name}.")
+    except botocore.exceptions.ClientError:
+        print(f"Couldn't delete all versions of {object_key} in {bucket_name}.")
+        
 
 if __name__ == "__main__":
-    cleanup_kms()
+    region = 'us-east-1'
+    user_name = get_iam_user().lower()
+    bucket_name = f'aws-ket-{user_name}'
     cleanup_s3()
