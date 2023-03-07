@@ -48,6 +48,9 @@ develop = [
     "pytest-cov>=2.6.1",
     "twine",
     "wheel",
+    "boto3>=1.20.47",
+    "moto>=4.1.4",
+    "coverage>=7.2.1"
 ]
 
 [tool.black]
