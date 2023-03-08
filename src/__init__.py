@@ -7,5 +7,5 @@ from .ket import (
     push_to_s3,
     encrypt_file,
     encrypt_text,
-    decrypt_text
+    decrypt_text,
 )

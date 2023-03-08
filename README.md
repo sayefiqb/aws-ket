@@ -8,7 +8,6 @@ AWS-KET (AWS KMS Encryption Tool) uses AWS KMS Key to encrypt and decrypt files/
 
 
 ![GitHub issues](https://img.shields.io/github/issues/sayefiqb/aws-ket)
-
 [![CodeQL](https://github.com/sayefiqb/aws-ket/actions/workflows/github-code-scanning/codeql/badge.svg?branch=main)](https://github.com/sayefiqb/aws-ket/actions/workflows/github-code-scanning/codeql)
 
 #### Setup
@@ -21,17 +20,41 @@ This application will only work if you have AWS account with full privileges on 
 #### Initaliztion of app
 ```
 cd src
-python initialize.py
+python init.py
 ```
 
 #### Encrypt text/file
 ```
-cd src
-python app.py --text 'Hello World'
-python app.py --file test/sample.txt
+python app.py --text <TEXT_TO_ENCRYPT> --save <FILE_NAME_IN_S3> 
+python app.py --file <PATH_OF_FILE_TO_ENCRYPT> --save <FILE_NAME_IN_S3>
 ```
 
-#### Decrypt text/file from s3
+#### Decrypt text/file from S3
+This will save with same name as remote
 ```
-python app.py --decrypt </path/to/your/s3/object>
+python app.py --decrypt <FILE_NAME_IN_S3> 
 ```
+OR 
+<br />
+To specify name for saved file
+```
+python app.py --decrypt <FILE_NAME_IN_S3>  --save <FILE_NAME_TO_SAVE_AS_IN_LOCAL>
+```
+
+#### Cleanup
+To cleanup your S3 bucket and start over
+```
+python cleanup.py
+```
+
+
+#### Details
+This project is a pure python project using modern tooling. It uses a `Makefile` as a command registry, with the following commands:
+- `make`: list available commands
+- `make develop`: install and build this library and its dependencies using `pip`
+- `make lint`: perform lint using `black`
+- `make scan`: run static analysis on code using `flake8`
+- `make test`: run automated tests with `pytest`
+- `make coverage`: run automated tests with `pytest` and collect coverage information
+
+`coverage` output can also be found in html format in `htmlcover` directory.
