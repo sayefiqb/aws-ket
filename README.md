@@ -8,7 +8,7 @@ AWS-KET (AWS KMS Encryption Tool) uses AWS KMS Key to encrypt and decrypt files/
 
 
 ![GitHub issues](https://img.shields.io/github/issues/sayefiqb/aws-ket)
-[![CodeQL](https://github.com/sayefiqb/aws-ket/actions/workflows/github-code-scanning/codeql/badge.svg?branch=main)](https://github.com/sayefiqb/aws-ket/actions/workflows/github-code-scanning/codeql) [![Build Status](https://github.com/sayefiqb/aws-ket/actions/workflows/build.yaml/badge.svg)](https://github.com/sayefiqb/aws-ket/actions/workflows/build.yaml)
+[![CodeQL](https://github.com/sayefiqb/aws-ket/actions/workflows/github-code-scanning/codeql/badge.svg?branch=main)](https://github.com/sayefiqb/aws-ket/actions/workflows/github-code-scanning/codeql) [![Build Status](https://github.com/sayefiqb/aws-ket/actions/workflows/build.yaml/badge.svg)](https://github.com/sayefiqb/aws-ket/actions/workflows/build.yaml) [![codecov](https://codecov.io/gh/sayefiqb/aws-ket/branch/main/graph/badge.svg?token=13922GT547)](https://codecov.io/gh/sayefiqb/aws-ket)
 
 #### Setup
 
@@ -49,7 +49,7 @@ python cleanup.py
 
 
 #### Details
-This project is a pure python project using modern tooling. It uses a `Makefile` as a command registry, with the following commands:
+This project uses `Makefile` as a command registry, with the following commands:
 - `make`: list available commands
 - `make develop`: install and build this library and its dependencies using `pip`
 - `make lint`: perform lint using `black`
