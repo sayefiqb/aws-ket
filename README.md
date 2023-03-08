@@ -16,6 +16,7 @@ This application will only work if you have AWS account with full privileges on 
 
 [Setup AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html)
 
+**Note:** Currently this tool only uses AWS region `us-east-2` for usage of kms and s3.
 
 #### Initaliztion of app
 ```
