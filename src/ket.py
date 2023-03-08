@@ -6,6 +6,7 @@
 import boto3
 import botocore
 
+
 def get_iam_user():
     try:
         client_iam = boto3.client('iam')
@@ -25,7 +26,7 @@ def get_iam_user():
 
 def create_s3_bucket(bucket_name, region):
     try:
-        client_s3 = boto3.client('s3', region_name = region)
+        client_s3 = boto3.client('s3', region_name=region)
         response = client_s3.create_bucket(
             ACL='private',
             Bucket=bucket_name,
@@ -35,15 +36,19 @@ def create_s3_bucket(bucket_name, region):
         )
     except botocore.exceptions.ClientError as error:
         response = error.response
-        if response["Error"]["Code"] == "BucketAlreadyOwnedByYou" and response["ResponseMetadata"]["HTTPStatusCode"] == 409:
+        if (
+            response["Error"]["Code"] == "BucketAlreadyOwnedByYou"
+            and response["ResponseMetadata"]["HTTPStatusCode"] == 409
+        ):
             print(response['Error']['Message'])
         if response["Error"]["Code"] == "InvalidBucketName" and response["ResponseMetadata"]["HTTPStatusCode"] == 400:
             print(response['Error']['Message'])
-   
-   
+
+
 def push_to_s3(bucket_name, remote_file_name, content, region):
     try:
-        client_s3 = boto3.resource('s3', region_name = region)
+        print(bucket_name)
+        client_s3 = boto3.resource('s3', region_name=region)
         client_s3.Bucket(bucket_name).put_object(Key=remote_file_name, Body=content)
     except botocore.exceptions.ClientError as error:
         response = error.response
@@ -52,17 +57,15 @@ def push_to_s3(bucket_name, remote_file_name, content, region):
         if response["Error"]["Code"] == "AllAccessDisabled" and response["ResponseMetadata"]["HTTPStatusCode"] == 403:
             print(response['Error']['Message'])
     except botocore.exceptions.ParamValidationError as param_error:
-        print(param_error)  
-            
-            
+        print(param_error)
+
+
 def create_kms_key(region):
     try:
-        client_kms = boto3.client('kms', region_name = region)
-        response = client_kms.create_key(
-            Description='AWS KET KMS KEY', KeyUsage='ENCRYPT_DECRYPT', Origin='AWS_KMS'
-        )
+        client_kms = boto3.client('kms', region_name=region)
+        response = client_kms.create_key(Description='AWS KET KMS KEY', KeyUsage='ENCRYPT_DECRYPT', Origin='AWS_KMS')
         return response['KeyMetadata']['KeyId']
-        
+
     except botocore.exceptions.ClientError as error:
         response = error.response
         if (
@@ -81,15 +84,12 @@ def create_kms_key(region):
 
 def create_kms_alias(key_id, alias_name, region):
     try:
-        client_kms = boto3.client('kms', region_name = region)
+        client_kms = boto3.client('kms', region_name=region)
         response = client_kms.create_alias(AliasName=alias_name, TargetKeyId=key_id)
         return alias_name
     except botocore.exceptions.ClientError as error:
         response = error.response
-        if (
-            response["Error"]["Code"] == "ValidationException"
-            and response["ResponseMetadata"]["HTTPStatusCode"] == 400
-        ):
+        if response["Error"]["Code"] == "ValidationException" and response["ResponseMetadata"]["HTTPStatusCode"] == 400:
             print(response['Error']['Message'])
             return "ValidationException"
         if (
@@ -102,7 +102,7 @@ def create_kms_alias(key_id, alias_name, region):
 
 def check_alias(alias_name, region):
     try:
-        client_kms = boto3.client('kms', region_name = region)
+        client_kms = boto3.client('kms', region_name=region)
         aliases = client_kms.list_aliases()
         for alias in aliases['Aliases']:
             if alias_name == alias['AliasName']:
@@ -126,7 +126,7 @@ def check_alias(alias_name, region):
 
 def encrypt_text(kms_key, text, region):
     try:
-        client_kms = boto3.client('kms', region_name = region)
+        client_kms = boto3.client('kms', region_name=region)
         encrypted_kms_request = client_kms.encrypt(KeyId=kms_key, Plaintext=text)
         encrypted_string = encrypted_kms_request["CiphertextBlob"]
         return encrypted_string
@@ -138,7 +138,10 @@ def encrypt_text(kms_key, text, region):
         if response['Error']['Code'] == "ValidationException" and response["ResponseMetadata"]["HTTPStatusCode"] == 400:
             print('The text you provided must be greater than 0 characters in length')
             return response['Error']['Code']
-        if response['Error']['Code'] == "AccessDeniedException" and response["ResponseMetadata"]["HTTPStatusCode"] == 400:
+        if (
+            response['Error']['Code'] == "AccessDeniedException"
+            and response["ResponseMetadata"]["HTTPStatusCode"] == 400
+        ):
             print(response['Error']['Message'])
             return response['Error']['Code']
     except botocore.exceptions.ParamValidationError as param_error:
@@ -147,7 +150,7 @@ def encrypt_text(kms_key, text, region):
 
 def encrypt_file(kms_key, file_name, region):
     try:
-        client_kms = boto3.client('kms', region_name = region)
+        client_kms = boto3.client('kms', region_name=region)
         file = open(file_name, "r")
         encrypted_kms_request = client_kms.encrypt(KeyId=kms_key, Plaintext=file.read())
         encrypted_string = encrypted_kms_request["CiphertextBlob"]
@@ -162,17 +165,20 @@ def encrypt_file(kms_key, file_name, region):
         if response['Error']['Code'] == "ValidationException" and response["ResponseMetadata"]["HTTPStatusCode"] == 400:
             print('The text you provided must be greater than 0 characters in length')
             return response['Error']['Code']
-        if response['Error']['Code'] == "AccessDeniedException" and response["ResponseMetadata"]["HTTPStatusCode"] == 400:
+        if (
+            response['Error']['Code'] == "AccessDeniedException"
+            and response["ResponseMetadata"]["HTTPStatusCode"] == 400
+        ):
             print(response['Error']['Message'])
             return response['Error']['Code']
     except botocore.exceptions.ParamValidationError as param_error:
         print(param_error)
-        
+
 
 def decrypt_text(bucket_name, remote_file_name, kms_key_id, region):
     try:
-        client_kms = boto3.client('kms', region_name = region)
-        client_s3 = boto3.client('s3', region_name = region)
+        client_kms = boto3.client('kms', region_name=region)
+        client_s3 = boto3.client('s3', region_name=region)
         s3_object = client_s3.get_object(Bucket=bucket_name, Key=remote_file_name)
         body = s3_object["Body"].read()
         kms_decrypt_request = client_kms.decrypt(CiphertextBlob=body, KeyId=kms_key_id)
@@ -191,6 +197,7 @@ def decrypt_text(bucket_name, remote_file_name, kms_key_id, region):
             print(response['Error']['Message'])
     except botocore.exceptions.ParamValidationError as param_error:
         print(param_error)
+
 
 def save_to_file(file_name, decrypted_string):
     file = open(file_name, "w")

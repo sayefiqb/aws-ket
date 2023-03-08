@@ -14,14 +14,14 @@ install:  ## install library
 # LINTS #
 #########
 lint:  ## run static analysis with flake8
-	python -m black --check example_project_python setup.py
-	python -m flake8 example_project_python setup.py
-
+	python -m black src
+scan:
+	python -m flake8 src
 # Alias
 lints: lint
 
 format:  ## run autoformatting with black
-	python -m black example_project_python/ setup.py
+	python -m src/ 
 
 # alias
 fix: format
@@ -33,7 +33,7 @@ check:  ## check assets for packaging
 checks: check
 
 annotate:  ## run type checking
-	python -m mypy ./example_project_python
+	python -m mypy ./src
 
 #########
 # TESTS #
@@ -44,6 +44,7 @@ test: ## clean and run unit tests
 coverage:  ## clean and run unit tests with coverage
 	coverage run -m pytest -v src/tests
 	coverage html
+	coverage report -m
 
 # Alias
 tests: test

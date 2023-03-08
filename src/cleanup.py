@@ -1,16 +1,13 @@
 #!/usr/bin/env python
 
-import os
 import boto3
 import botocore
+import argparse
+from pprint import pprint
 
 
-client_kms = boto3.client('kms')
-client_s3 = boto3.client('s3')
-client_iam = boto3.client('iam')
-resource_s3 = boto3.resource('s3')
-
-
+parser = argparse.ArgumentParser()
+parser.add_argument("--region", "-R", help="specify region, e.g. us-east-1")
 
 
 def get_iam_user():
@@ -30,11 +27,13 @@ def get_iam_user():
             print(response['Error']['Message'])
 
 
-def cleanup_s3(bucket_name, region):
+def cleanup_s3(bucket_name, region_name):
     try:
-        permanently_delete_object(bucket_name,region)
+        permanently_delete_object(bucket_name, region_name)
+        resource_s3 = boto3.resource('s3', region_name)
         bucket = resource_s3.Bucket(bucket_name)
         bucket.objects.all().delete()
+        client_s3 = boto3.client('s3', region_name)
         client_s3.delete_bucket(Bucket=bucket_name)
         print('Cleaned up S3!')
     except botocore.exceptions.ClientError as error:
@@ -42,7 +41,8 @@ def cleanup_s3(bucket_name, region):
         if response["Error"]["Code"] == "NoSuchBucket" or response["ResponseMetadata"]["HTTPStatusCode"] == 404:
             print(f'The S3 bucket was already deleted')
 
-def permanently_delete_object(bucket_name,region object_key=None):
+
+def permanently_delete_object(bucket_name, region_name, object_key=None):
     """
     Permanently deletes a versioned object by deleting all of its versions.
 
@@ -50,22 +50,27 @@ def permanently_delete_object(bucket_name,region object_key=None):
     :param region: The region S3 was created in.
     :param object_key: The object to delete.
     """
-    s3 = boto3.resource('s3')
+    s3 = boto3.resource('s3', region_name)
     bucket = s3.Bucket(bucket_name)
     print(f'Deleting {bucket_name} ...')
     try:
         if object_key:
             bucket.object_versions.filter(Prefix=object_key).delete()
-            print(f"Permanently deleted all versions of object {object_key} in {bucket_name}.",)
+            print(
+                f"Permanently deleted all versions of object {object_key} in {bucket_name}.",
+            )
         else:
             bucket.object_versions.delete()
             print(f"Permanently deleted all versions of all objects in {bucket_name}.")
     except botocore.exceptions.ClientError:
         print(f"Couldn't delete all versions of {object_key} in {bucket_name}.")
-        
+
 
 if __name__ == "__main__":
-    region = 'us-east-1'
-    user_name = get_iam_user().lower()
-    bucket_name = f'aws-ket-{user_name}'
-    cleanup_s3()
+    args = parser.parse_args()
+    if args.region:
+        user_name = get_iam_user().lower()
+        bucket_name = f'aws-ket-{user_name}'
+        cleanup_s3(bucket_name, args.region)
+    else:
+        print('Invalid arguments. Use python ./cleanup.py --help')
