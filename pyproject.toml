@@ -7,12 +7,12 @@ requires = [
 build-backend="setuptools.build_meta"
 
 [project]
-name = "example-project-python"
-authors = [{name = "Your Name", email = "Your_Email@gmail.com"}]
-description="An example python project"
+name = "aws-ket"
+authors = [{name = "Sayef Iqbal", email = "sayef.iqbal@gmal.com"}]
+description="Utility tool to encrypt data using AWS KMS and store it in preferred backend."
 readme = "README.md"
-version = "0.0.1"
-requires-python = ">=3.7"
+version = "0.1.1"
+requires-python = ">=3.9"
 
 dependencies = []
 
@@ -67,10 +67,10 @@ ignore = [
 ignore = ['E203', 'W503']
 max-line-length=120
 exclude=[
-    'example_project_python/tests/*'
+    'src/tests/*'
 ]
 per-file-ignores= [
-    'example_project_python/__init__.py:F401, F403'
+    'src/__init__.py:F401, F403'
 ]
 
 
