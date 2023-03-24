@@ -8,7 +8,7 @@ build-backend="setuptools.build_meta"
 
 [project]
 name = "aws-ket"
-authors = [{name = "Sayef Iqbal", email = "sayef.iqbal@gmal.com"}]
+authors = [{name = "Sayef Iqbal", email = "si2400@columbia.edu"}]
 description="Utility tool to encrypt data using AWS KMS and store it in preferred backend."
 readme = "README.md"
 version = "0.1.1"
@@ -33,7 +33,7 @@ classifiers = [
 file = "LICENSE"
 
 [project.urls]
-repository = "https://github.com/columbiaoss/example-project-python"
+repository = "https://github.com/sayefiqb/aws-ket"
 
 [project.optional-dependencies]
 develop = [
