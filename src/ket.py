@@ -8,6 +8,17 @@ import botocore
 
 
 def get_iam_user():
+    """get_iam_user()
+
+    Retrieves information about the specified IAM user, including the user creation date, path, unique ID, and ARN.
+    It uses the AWS Access Key and Secret Key to retrieve the user information
+    
+    Returns
+    -------
+    dict
+        A dictioary scontaining details about the IAM user.
+
+    """
     try:
         client_iam = boto3.client('iam')
         response = client_iam.get_user()
@@ -25,6 +36,18 @@ def get_iam_user():
 
 
 def create_s3_bucket(bucket_name, region):
+    """Create S3 Bucket
+
+    Creates an s3 bucket in AWS with the provided name and specified region. The user must have create bucket permission.
+    
+    Parameters
+    ----------
+    bucket_name : str
+        Name of the bucket to be created
+    region : str
+        Region where the bucket will be created. e.g. us-east-2. (Note: S3 and KMS must be in same region)
+
+    """
     try:
         client_s3 = boto3.client('s3', region_name=region)
         response = client_s3.create_bucket(
@@ -46,6 +69,28 @@ def create_s3_bucket(bucket_name, region):
 
 
 def push_to_s3(bucket_name, remote_file_name, content, region):
+    """Push files or texts to S3
+
+    Creates an s3 bucket in AWS with the provided name and specified region. The user must have create bucket permission.
+    
+    Parameters
+    ----------
+    bucket_name : str
+        Name of the bucket to be created
+    remote_file_name : str
+        File or object name with which it will be stored as in the remote S3 bucket
+    content: str
+        Text, object or file that will be pushed to S3. Often referred as the body of the request.
+    region: str
+        Region where the bucket is located. e.g. us-east-2. (Note: S3 and KMS must be in same region)
+
+    Raises
+    ----------
+    NoSuchBucket Exception
+        If trying to push to a bucket that does nnot exists. Can be casued by typing an incorrect bucket name.
+    AllAccessDisabled Exception
+        Usually raised if no filename provided in the parameter
+    """
     try:
         print(bucket_name)
         client_s3 = boto3.resource('s3', region_name=region)
@@ -61,6 +106,27 @@ def push_to_s3(bucket_name, remote_file_name, content, region):
 
 
 def create_kms_key(region):
+    """Create KMS Key in AWS
+
+    Creates a KMS key in AWS in the specified region. The user must have create bucket permission.
+    
+    Parameters
+    ----------
+    region: str
+        Region where the KMS key will be created. e.g. us-east-2. (Note: S3 and KMS must be in same region)
+
+    Returns
+    -------
+    str
+        ID of the KMS key
+        
+    Raises
+    -------
+    UnrecognizedClientException
+        If AWS Access key does not exists
+    AccessDeniedException
+        If the user does not have suffiecient permission to create a KMS key
+    """
     try:
         client_kms = boto3.client('kms', region_name=region)
         response = client_kms.create_key(Description='AWS KET KMS KEY', KeyUsage='ENCRYPT_DECRYPT', Origin='AWS_KMS')
@@ -83,6 +149,31 @@ def create_kms_key(region):
 
 
 def create_kms_alias(key_id, alias_name, region):
+    """Create an Alias for KMS Key in AWS
+
+    Creates an alias for kms key in AWS in the specified region. The user must have create kms alias permission.
+    
+    Parameters
+    ----------
+    key_id: str
+        ID of the kms key
+    alias_name: str
+        Alias for the kms key. Prefer a simple name that can be used. For this project it is set as alias/aws-ket
+    region: str
+        Region where the KMS key will be created. e.g. us-east-2. (Note: S3 and KMS must be in same region)
+
+    Returns
+    -------
+    str
+        name of the alias
+        
+    Raises
+    -------
+    ValidationException
+        If the alias name does not follow AWS guidelines or convention
+    AlreadyExistsException
+        If an alias with same name already exists in the same region
+    """
     try:
         client_kms = boto3.client('kms', region_name=region)
         response = client_kms.create_alias(AliasName=alias_name, TargetKeyId=key_id)
@@ -101,6 +192,29 @@ def create_kms_alias(key_id, alias_name, region):
 
 
 def check_alias(alias_name, region):
+    """Check for AWS KMS alias
+
+    Checks if an alias for kms key with specified name already exists in a region.
+    
+    Parameters
+    ----------
+    alias_name: str
+        Alias for the kms key. For this project it is set as alias/aws-ket
+    region: str
+        Region where the KMS key is be created. e.g. us-east-2. (Note: S3 and KMS must be in same region)
+
+    Returns
+    -------
+    str
+        Name of the alias or None
+        
+    Raises
+    -------
+    UnrecognizedClientException
+        Incorrect name for alias is provided
+    AccessDeniedException
+        If user does not have permisions to check for kms key alias name
+    """
     try:
         client_kms = boto3.client('kms', region_name=region)
         aliases = client_kms.list_aliases()
@@ -125,6 +239,31 @@ def check_alias(alias_name, region):
 
 
 def encrypt_text(kms_key, text, region):
+    """Encrypt text using KMS
+
+    Encrypts plaintext of up to 4,096 bytes using a KMS key from the specified region.
+    
+    Parameters
+    ----------
+    kms_key: str
+        This can be either kms key id, kms arn, alias or alias arn
+    text: str
+        Either plain text or any type of content that needs to be encrypted
+    region: str
+        Region where the KMS key is located. e.g. us-east-2. (Note: S3 and KMS must be in same region)
+
+    Returns
+    -------
+    dict
+        CiphertextBlob
+        
+    Raises
+    -------
+    UnrecognizedClientException
+        Incorrect name for alias is provided
+    AccessDeniedException
+        If user does not have permisions to encrypt using kms key or alias name
+    """
     try:
         client_kms = boto3.client('kms', region_name=region)
         encrypted_kms_request = client_kms.encrypt(KeyId=kms_key, Plaintext=text)
@@ -149,6 +288,35 @@ def encrypt_text(kms_key, text, region):
 
 
 def encrypt_file(kms_key, file_name, region):
+    """Encrypt file using KMS
+
+    Encrypts the content of a specified file using a KMS key.
+    
+    Parameters
+    ----------
+    kms_key: str
+        This can be either kms key id, kms arn, alias or alias arn
+    file_name: str
+        File name or path to a file that needs to be encrypted
+    region: str
+        Region where the KMS key is located. e.g. us-east-2. (Note: S3 and KMS must be in same region)
+
+    Returns
+    -------
+    dict
+        CiphertextBlob
+        
+    Raises
+    -------
+    NotFoundException
+        Incorrect name of file or file does not exist
+    ValidationException
+        The file must contain more than 0 characters text
+    AccessDeniedException
+        If user does not have permisions to check for kms key alias name
+    ParamValidationError
+        Incorrect parameter passed to the function
+    """
     try:
         client_kms = boto3.client('kms', region_name=region)
         file = open(file_name, "r")
@@ -176,6 +344,37 @@ def encrypt_file(kms_key, file_name, region):
 
 
 def decrypt_text(bucket_name, remote_file_name, kms_key_id, region):
+    """Decrypt file from S3 using KMS
+
+    Decrypts file from S3 using KMS key.
+    
+    Parameters
+    ----------
+    bucket_name: str
+        Bucket where the enrypted file is stored
+    remote_file_name: str
+        Object name or path to an object in S3 that needs to be decrypted
+    kms_key_id: str
+        This can be either kms key id, kms arn, alias or alias arn
+    region: str
+        Region where the KMS key is located. e.g. us-east-2. (Note: S3 and KMS must be in same region)
+
+    Returns
+    -------
+    str
+        Plaintext
+        
+    Raises
+    -------
+    NoSuchBucket
+        Incorrect bucket name provided
+    NoSuchKey
+        Incorret object name or object does not exist in S3
+    IncorrectKeyException
+        The key does not match with what was used to encrypt the file
+    ParamValidationError
+        Incorrect parameter passed to the function
+    """
     try:
         client_kms = boto3.client('kms', region_name=region)
         client_s3 = boto3.client('s3', region_name=region)
@@ -200,6 +399,17 @@ def decrypt_text(bucket_name, remote_file_name, kms_key_id, region):
 
 
 def save_to_file(file_name, decrypted_string):
+    """Save file
+
+    Saves the derypted text to a local file
+    
+    Parameters
+    ----------
+    file_name: str
+        Local file name where the decrypted output will be sotred
+    decrypted_string: str
+        Decrypted utput in string format.
+    """
     file = open(file_name, "w")
     file.write(decrypted_string)
     file.close()

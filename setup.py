@@ -8,5 +8,6 @@ setup(
     maintainer       = 'Sayef Iqbal',
     url              = 'https://github.com/sayefiqb/aws-ket',
     description      = 'Utility tool to encrypt data using AWS KMS and store it in preferred backend.',
-    version          = VERSION
+    version          = VERSION,
+    include_package_data= True
 )
