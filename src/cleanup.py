@@ -11,6 +11,22 @@ parser.add_argument("--region", "-R", help="specify region, e.g. us-east-1")
 
 
 def get_iam_user():
+    """Get IAM User
+
+    Get current IAM user based onn the Access/Sewcret Keys setup in CLI
+    
+    Returns
+    -------
+    str
+        user_id
+        
+    Raises
+    -------
+    UnrecognizedClientException
+        Error with the boto3 client
+    AccessDeniedException
+        Invalid Accesss Key and Secret key used. Unable to get the IAM user
+    """
     try:
         client_iam = boto3.client('iam')
         response = client_iam.get_user()
@@ -28,6 +44,22 @@ def get_iam_user():
 
 
 def cleanup_s3(bucket_name, region_name):
+    """Clean up S3
+
+    Deletes an entire bucket
+    
+    Parameters
+    ----------
+    bucket_name: str
+        Bucket where the enrypted file is stored
+    region_name: str
+        Object name or path to an object in S3 that needs to be decrypted
+        
+    Raises
+    -------
+    NoSuchBucket
+        The bucket name provided was incorrect or does not exist
+    """
     try:
         permanently_delete_object(bucket_name, region_name)
         resource_s3 = boto3.resource('s3', region_name)
@@ -43,12 +75,22 @@ def cleanup_s3(bucket_name, region_name):
 
 
 def permanently_delete_object(bucket_name, region_name, object_key=None):
-    """
+    """Permanently delete objects
     Permanently deletes a versioned object by deleting all of its versions.
 
-    :param bucket: The bucket that contains the object.
-    :param region: The region S3 was created in.
-    :param object_key: The object to delete.
+    Parameters
+    ----------
+    bucket_name: str
+        The bucket that contains the object.
+    region_name: str
+        The region S3 was created in.
+    object_key: str
+        The object to delete.
+        
+    Raises
+    -------
+    ClientErrorException
+        Error while trying to delete objects in a S3 bucket
     """
     s3 = boto3.resource('s3', region_name)
     bucket = s3.Bucket(bucket_name)
