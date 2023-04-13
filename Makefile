@@ -14,14 +14,14 @@ install:  ## install library
 # LINTS #
 #########
 lint:  ## run static analysis with flake8
-	python -m black src
+	python -m black awsket
 scan:
-	python -m flake8 src
+	python -m flake8 awsket
 # Alias
 lints: lint
 
 format:  ## run autoformatting with black
-	python -m src/ 
+	python -m awsket/ 
 
 # alias
 fix: format
@@ -33,16 +33,16 @@ check:  ## check assets for packaging
 checks: check
 
 annotate:  ## run type checking
-	python -m mypy ./src
+	python -m mypy ./awsket
 
 #########
 # TESTS #
 #########
 test: ## clean and run unit tests
-	python -m pytest -v src/tests
+	python -m pytest -v awsket/tests
 
 coverage:  ## clean and run unit tests with coverage
-	coverage run -m pytest -v src/tests
+	coverage run -m pytest -v awsket/tests
 	coverage html
 	coverage report -m
 
