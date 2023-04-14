@@ -1,6 +1,6 @@
 from setuptools import setup
 
-VERSION = "0.1.1"
+VERSION = "0.1.2"
 setup(
     name             = 'aws-ket',
     author           = 'Sayef Iqbal',
@@ -9,5 +9,8 @@ setup(
     url              = 'https://github.com/sayefiqb/aws-ket',
     description      = 'Utility tool to encrypt data using AWS KMS and store it in preferred backend.',
     version          = VERSION,
-    include_package_data= True
+    include_package_data= True,
+    # entry_points = {
+    #     'console_scripts': ['awsket=awsket.ket']
+    # }
 )

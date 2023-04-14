@@ -1,5 +1,5 @@
 from moto import mock_s3, mock_kms, mock_iam
-from src import create_kms_alias, create_kms_key, create_s3_bucket, check_alias, get_iam_user, push_to_s3
+from awsket import create_kms_alias, create_kms_key, create_s3_bucket, check_alias, get_iam_user, push_to_s3
 import boto3
 import os
 import pytest
