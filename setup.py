@@ -4,7 +4,7 @@ from pathlib import Path
 this_directory = Path(__file__).parent
 long_description = (this_directory / "README.md").read_text()
 
-VERSION = "0.1.3"
+VERSION = "0.1.4"
 setup(
     name             = 'aws-ket',
     author           = 'Sayef Iqbal',
@@ -16,7 +16,7 @@ setup(
     long_description_content_type='text/markdown',
     version          = VERSION,
     include_package_data= True,
-    scripts = ['awsket/app.py']
+    scripts = ['awsket/ket.py']
     # entry_points = {
     #     'console_scripts': ['awsket=awsket.ket']
     # }
