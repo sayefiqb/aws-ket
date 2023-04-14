@@ -8,7 +8,7 @@ AWS-KET (AWS KMS Encryption Tool) uses AWS KMS Key to encrypt and decrypt files/
 
 
 ![GitHub issues](https://img.shields.io/github/issues/sayefiqb/aws-ket)
-[![CodeQL](https://github.com/sayefiqb/aws-ket/actions/workflows/github-code-scanning/codeql/badge.svg?branch=main)](https://github.com/sayefiqb/aws-ket/actions/workflows/github-code-scanning/codeql) [![Build Status](https://github.com/sayefiqb/aws-ket/actions/workflows/build.yaml/badge.svg)](https://github.com/sayefiqb/aws-ket/actions/workflows/build.yaml) [![codecov](https://codecov.io/gh/sayefiqb/aws-ket/branch/main/graph/badge.svg?token=13922GT547)](https://codecov.io/gh/sayefiqb/aws-ket)[![PyPI](https://img.shields.io/pypi/v/aws-ket)](https://pypi.org/project/aws-ket)
+[![CodeQL](https://github.com/sayefiqb/aws-ket/actions/workflows/github-code-scanning/codeql/badge.svg?branch=main)](https://github.com/sayefiqb/aws-ket/actions/workflows/github-code-scanning/codeql) [![Build Status](https://github.com/sayefiqb/aws-ket/actions/workflows/build.yaml/badge.svg)](https://github.com/sayefiqb/aws-ket/actions/workflows/build.yaml) [![codecov](https://codecov.io/gh/sayefiqb/aws-ket/branch/main/graph/badge.svg?token=13922GT547)](https://codecov.io/gh/sayefiqb/aws-ket)[![PyPI](https://img.shields.io/pypi/v/aws-ket)](https://pypi.org/project/aws-ket)[![Documentation Status](https://readthedocs.org/projects/aws-ket/badge/?version=latest)](https://aws-ket.readthedocs.io/en/latest/?badge=latest)
 
 #### Setup
 
@@ -59,3 +59,8 @@ This project uses `Makefile` as a command registry, with the following commands:
 - `make coverage`: run automated tests with `pytest` and collect coverage information
 
 `coverage` output can also be found in html format in `htmlcover` directory.
+
+#### Example
+
+First download the source code
+![](aws-ket.gif)
