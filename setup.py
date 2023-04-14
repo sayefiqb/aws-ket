@@ -10,7 +10,7 @@ setup(
     description      = 'Utility tool to encrypt data using AWS KMS and store it in preferred backend.',
     version          = VERSION,
     include_package_data= True,
-    entry_points = {
-        'console_scripts': ['awsket=awsket.ket']
-    }
+    # entry_points = {
+    #     'console_scripts': ['awsket=awsket.ket']
+    # }
 )
