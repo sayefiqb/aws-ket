@@ -11,7 +11,7 @@ name = "aws-ket"
 authors = [{name = "Sayef Iqbal", email = "si2400@columbia.edu"}]
 description="Utility tool to encrypt data using AWS KMS and store it in preferred backend."
 readme = "README.md"
-version = "0.1.1"
+version = "0.1.2"
 requires-python = ">=3.9"
 
 dependencies = []
@@ -67,10 +67,10 @@ ignore = [
 ignore = ['E203', 'W503']
 max-line-length=120
 exclude=[
-    'src/tests/*'
+    'awsket/tests/*'
 ]
 per-file-ignores= [
-    'src/__init__.py:F401, F403'
+    'awsket/__init__.py:F401, F403'
 ]
 
 
@@ -100,4 +100,4 @@ python_version = '3.10'
 
 [tool.pytest.ini_options]
 asyncio_mode = 'strict'
-testpaths = 'src/tests'
+testpaths = 'awsket/tests'

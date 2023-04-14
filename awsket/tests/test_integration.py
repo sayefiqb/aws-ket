@@ -1,4 +1,4 @@
-from src import encrypt_text, encrypt_file, decrypt_text, push_to_s3
+from awsket import encrypt_text, encrypt_file, decrypt_text, push_to_s3
 from moto import mock_s3, mock_kms, mock_iam
 import boto3
 import os
@@ -25,7 +25,7 @@ class KETIntegrationTest(unittest.TestCase):
     bucket_name = "aws-ket"
     region_name = 'us-east-2'
     remote_file_name = 'test'
-    local_file_name = 'src/tests/sample.txt'
+    local_file_name = 'awsket/tests/sample.txt'
     content = 'This is a test string!'
     alias_name = 'alias/test'
     kms_key_id = ''
