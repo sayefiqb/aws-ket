@@ -1,37 +1,37 @@
-src package
+awsket package
 ===========
 
 Submodules
 ----------
 
-src.app module
+awsket.app module
 --------------
 
-.. automodule:: src.app
+.. automodule:: awsket.app
    :members:
    :undoc-members:
    :show-inheritance:
 
-src.cleanup module
+awsket.cleanup module
 ------------------
 
-.. automodule:: src.cleanup
+.. automodule:: awsket.cleanup
    :members:
    :undoc-members:
    :show-inheritance:
 
-src.init module
+awsket.init module
 ---------------
 
-.. automodule:: src.init
+.. automodule:: awsket.init
    :members:
    :undoc-members:
    :show-inheritance:
 
-src.ket module
+awsket.ket module
 --------------
 
-.. automodule:: src.ket
+.. automodule:: awsket.ket
    :members:
    :undoc-members:
    :show-inheritance:
@@ -39,7 +39,7 @@ src.ket module
 Module contents
 ---------------
 
-.. automodule:: src
+.. automodule:: awsket
    :members:
    :undoc-members:
    :show-inheritance:
