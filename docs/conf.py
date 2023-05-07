@@ -19,7 +19,7 @@ from recommonmark.transform import AutoStructify
 
 # -- Project information -----------------------------------------------------
 
-project = 'aws-ket'
+project = 'awsket'
 copyright = '2023, Sayef Iqbal'
 author = 'Sayef Iqbal'
 
