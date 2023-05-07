@@ -32,7 +32,7 @@ release = '0.1.5'
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-master_doc = "_build/html/index.html"
+master_doc = "index"
 extensions = [
     "recommonmark", 
     "sphinx.ext.napoleon", 
