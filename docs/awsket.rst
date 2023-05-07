@@ -1,11 +1,11 @@
 awsket package
-===========
+==============
 
 Submodules
 ----------
 
 awsket.app module
---------------
+-----------------
 
 .. automodule:: awsket.app
    :members:
@@ -13,7 +13,7 @@ awsket.app module
    :show-inheritance:
 
 awsket.cleanup module
-------------------
+---------------------
 
 .. automodule:: awsket.cleanup
    :members:
@@ -21,7 +21,7 @@ awsket.cleanup module
    :show-inheritance:
 
 awsket.init module
----------------
+------------------
 
 .. automodule:: awsket.init
    :members:
@@ -29,7 +29,7 @@ awsket.init module
    :show-inheritance:
 
 awsket.ket module
---------------
+-----------------
 
 .. automodule:: awsket.ket
    :members:
