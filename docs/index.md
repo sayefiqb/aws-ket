@@ -69,7 +69,7 @@ This project uses `Makefile` as a command registry, with the following commands:
    :maxdepth: 4
    :caption: Contents:
 
-   awsket
+   modules
    example
 
    
