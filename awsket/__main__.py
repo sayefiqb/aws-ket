@@ -10,3 +10,6 @@ from .ket import (
     encrypt_text,
     decrypt_text,
 )
+
+if __name__ == "__main__":
+    print("Main")
